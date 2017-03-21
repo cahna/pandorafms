@@ -61,6 +61,9 @@ EXPOSE 41121
 # Simple startup script to avoid some issues observed with container restart
 ADD docker_entrypoint.sh /entrypoint.sh
 RUN chmod -v +x /entrypoint.sh
+RUN /usr/sbin/useradd -d /home/pandora -s /bin/false -M -g 0 pandora
+
+VOLUME /etc/pandora
 
 CMD ["/entrypoint.sh"]
 

@@ -36,15 +36,15 @@ if [ -z "$PANDORA_DB_PASSWORD" ]; then
 fi
 
 #Create the pandora user to run the anyterd, mainly
-/usr/sbin/useradd -d /home/pandora -s /bin/false -M -g 0 pandora
+/usr/sbin/useradd -d /home/pandora -s /bin/false -M -g 0 pandora || echo "skipping user creation..."
 
 cd /tmp/pandorafms/pandora_server && chmod +x pandora_server_installer && sync && ./pandora_server_installer --install
 
 #Configure the Pandora FMS Server to connect to the database
-sed -i "s/dbname pandora/dbname $PANDORA_DB_NAME/g" /etc/pandora/pandora_server.conf
-sed -i "s/dbpass pandora/dbpass $PANDORA_DB_PASSWORD/g" /etc/pandora/pandora_server.conf
-sed -i "s/dbuser pandora/dbuser $PANDORA_DB_USER/g" /etc/pandora/pandora_server.conf
-sed -i "s/dbhost 127.0.0.1/dbhost $PANDORA_DB_HOST/g" /etc/pandora/pandora_server.conf
+sed -i "s/^dbname pandora$/dbname $PANDORA_DB_NAME/g" /etc/pandora/pandora_server.conf
+sed -i "s/^dbpass pandora$/dbpass $PANDORA_DB_PASSWORD/g" /etc/pandora/pandora_server.conf
+sed -i "s/^dbuser pandora$/dbuser $PANDORA_DB_USER/g" /etc/pandora/pandora_server.conf
+sed -i "s/^dbhost 127.0.0.1$/dbhost $PANDORA_DB_HOST/g" /etc/pandora/pandora_server.conf
 
 #Rock n' roll!
 /etc/init.d/crond start &
